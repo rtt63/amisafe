@@ -33,7 +33,14 @@ export function getPRDiff(base: string, head: string): PRDiff {
   let totalDeletions = 0;
 
   for (const line of statsOutput.split("\n").filter(Boolean)) {
-    const [additions, deletions, path] = line.split("\t");
+    const parts = line.split("\t");
+    const additions = parts[0];
+    const deletions = parts[1];
+    const path = parts[2];
+
+    if (!additions || !deletions || !path) {
+      continue;
+    }
 
     if (additions === "-" && deletions === "-") {
       files.push({
@@ -90,7 +97,11 @@ function getCommitHistory(base: string, head: string): CommitInfo[] {
     .split("\n")
     .filter(Boolean)
     .map((line) => {
-      const [sha, author, dateStr, message] = line.split("|");
+      const parts = line.split("|");
+      const sha = parts[0] || "";
+      const author = parts[1] || "";
+      const dateStr = parts[2] || "";
+      const message = parts[3] || "";
       return {
         sha,
         author,

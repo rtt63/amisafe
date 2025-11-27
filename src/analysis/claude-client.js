@@ -21,6 +21,9 @@ async function analyzeWithClaude(files, depth, totalLines, apiKey) {
         ],
     });
     const content = response.content[0];
+    if (!content) {
+        throw new Error("No content in Claude response");
+    }
     if (content.type !== "text") {
         throw new Error("Unexpected response type from Claude");
     }
