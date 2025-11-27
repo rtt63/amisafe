@@ -14,6 +14,21 @@ jobs:
       pull-requests: write
       checks: write
     steps:
+      - name: Get PR details
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('sha', pr.head.sha);
+            core.setOutput('base', pr.base.ref);
+            core.setOutput('head', pr.head.ref);
+
       - name: Create check run
         id: check
         uses: actions/github-script@v7
@@ -23,17 +38,16 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'Deploy Risk Analysis',
-              head_sha: context.payload.issue.pull_request.head.sha,
+              head_sha: '${{ steps.pr.outputs.sha }}',
               status: 'in_progress',
               started_at: new Date().toISOString()
             });
             core.setOutput('check_id', check.id);
-            return check.id;
 
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: refs/pull/${{ github.event.issue.number }}/head
+          ref: ${{ steps.pr.outputs.sha }}
 
       - uses: actions/setup-node@v4
         with:
@@ -42,29 +56,16 @@ jobs:
       - name: Install amisafe
         run: npm install -g amisafe
 
-      - name: Get PR info
-        id: pr
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-            core.setOutput('base', pr.base.ref);
-            core.setOutput('head', pr.head.ref);
-
       - name: Run risk analysis
         id: analysis
+        continue-on-error: true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           amisafe \
             --base origin/${{ steps.pr.outputs.base }} \
             --head origin/${{ steps.pr.outputs.head }} \
-            --github > analysis.txt
-          echo "result=$?" >> $GITHUB_OUTPUT
+            --github | tee analysis.txt
 
       - name: Update check run
         if: always()
@@ -76,7 +77,7 @@ jobs:
               ? fs.readFileSync('analysis.txt', 'utf8') 
               : 'No output generated';
 
-            const conclusion = '${{ steps.analysis.outputs.result }}' === '0' 
+            const conclusion = '${{ steps.analysis.outcome }}' === 'success' 
               ? 'success' 
               : 'failure';
 
