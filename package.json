@@ -2,19 +2,44 @@
   "name": "amisafe",
   "version": "0.1.0",
   "description": "AI-powered deploy risk analyzer for Pull Requests",
-  "main": "dist/index.js",
+  "main": "dist/analyzer.js",
+  "types": "dist/analyzer.d.ts",
   "bin": {
     "amisafe": "dist/cli.js"
   },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/cli.ts",
+    "prepublishOnly": "npm run build",
     "test": "echo \"No tests yet\"",
     "lint": "eslint src --ext .ts"
   },
-  "keywords": ["deploy", "risk", "ci", "cd", "pull-request", "ai"],
+  "keywords": [
+    "deploy",
+    "risk",
+    "ci",
+    "cd",
+    "pull-request",
+    "ai",
+    "github",
+    "code-review",
+    "breaking-changes"
+  ],
   "author": "rtt63",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/amisafe"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/amisafe/issues"
+  },
+  "homepage": "https://github.com/yourusername/amisafe#readme",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
     "commander": "^12.0.0"
@@ -26,5 +51,8 @@
     "eslint": "^8.56.0",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

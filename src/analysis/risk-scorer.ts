@@ -40,12 +40,14 @@ export function calculateRiskScore(
   claudeAnalysis: ClaudeAnalysis,
   categorizedFiles: CategorizedFiles,
 ): RiskScore {
-  const timeSpanHours = prDiff.commits.length
-    ? getTimeSpanHours(
-        prDiff.commits[0].date,
-        prDiff.commits[prDiff.commits.length - 1].date,
-      )
-    : 0;
+  let timeSpanHours = 0;
+  if (prDiff.commits.length > 0) {
+    const firstCommit = prDiff.commits[0];
+    const lastCommit = prDiff.commits[prDiff.commits.length - 1];
+    if (firstCommit && lastCommit) {
+      timeSpanHours = getTimeSpanHours(firstCommit.date, lastCommit.date);
+    }
+  }
 
   const prSizeScore = sizeAnalysis.baseRiskScore;
 
