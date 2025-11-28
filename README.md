@@ -1,6 +1,6 @@
 # prscore
 
-Use AI to detect how potentially dangerous to is merge this PR.
+Use AI to detect how potentially dangerous is to merge this PR.
 
 Examples
 
