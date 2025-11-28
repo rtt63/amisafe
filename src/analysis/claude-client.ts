@@ -119,7 +119,7 @@ Respond with JSON only:
 }
 
 Focus ONLY on:
-${focusPoints.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+${focusPoints.join("\n")}
 
 Keep response concise. Respond ONLY with valid JSON, no markdown.`;
 }
@@ -168,7 +168,7 @@ Respond with JSON only:
 }
 
 Analyze for:
-${focusPoints.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+${focusPoints.join("\n")}
 
 Rank findings by severity. Respond ONLY with valid JSON, no markdown.`;
 }
@@ -217,7 +217,7 @@ Respond with JSON only:
 }
 
 Analyze for:
-${focusPoints.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+${focusPoints.join("\n")}
 
 Provide specific line numbers when possible. Rank all findings by severity.
 Respond ONLY with valid JSON, no markdown.`;
@@ -267,7 +267,7 @@ Respond with JSON only:
 }
 
 Perform deep analysis:
-${focusPoints.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+${focusPoints.join("\n")}
 
 Be extremely thorough. Include line numbers for every finding.
 Provide actionable recommendations for each risk.
