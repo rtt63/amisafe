@@ -2,6 +2,12 @@
 
 Use AI to detect how potentially dangerous is to merge this PR.
 
+## Why is it better than tragitional linters and code review?
+
+It's a good option for tight, fast-paced teams where proper, detailed and qualified code review is a luxury. You still need tests, good typings and skilled engineers.
+
+But **if most of your code reviews are LGTM at best - try this instead.**
+
 Examples
 
 - Big PRs (too many things at once to keep focus on)
