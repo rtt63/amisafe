@@ -1,6 +1,6 @@
 # prscore
 
-Use AI to detect how potentially dangerous to merge this PR.
+Use AI to detect how potentially dangerous to is merge this PR.
 
 Examples
 
@@ -32,35 +32,16 @@ npm install -g prscore && prscore init
 
 ```bash
 # Analyze a PR locally
-prscore --base main --head feature-branch
-
-# With API key
 export ANTHROPIC_API_KEY="your-key"
 prscore --base main --head feature-branch
 ```
 
-### GitHub Action
+### GitHub Action Setup
 
-Add to `.github/workflows/risk-check.yml`:
-
-```yaml
-TODO example
-```
-
-**Setup:**
+[Check our setup](https://github.com/rtt63/prscore/blob/main/.github/workflows/publish.yml)
 
 1. Add `ANTHROPIC_API_KEY` to repository secrets
 2. Comment `/prscore` on any PR to analyze scoring
-
-## Configuration
-
-### API Key
-
-Set your Anthropic API key:
-
-```bash
-export ANTHROPIC_API_KEY="sk-ant-..."
-```
 
 ## Risk Scoring
 
