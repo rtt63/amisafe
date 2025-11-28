@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { AnalysisDepth } from "./size-analyzer";
 import { FileDiff } from "../git/diff-parser";
+import { loadPromptsConfig } from "../config/config-loader";
 
 export interface ClaudeAnalysis {
   overallRisk: number;
@@ -69,20 +70,25 @@ function buildPrompt(
   totalLines: number,
 ): string {
   const diffContent = formatDiff(files);
+  const config = loadPromptsConfig();
 
   switch (depth) {
     case AnalysisDepth.SUPERFICIAL:
-      return buildSuperficialPrompt(diffContent, totalLines);
+      return buildSuperficialPrompt(diffContent, totalLines, config.superficial);
     case AnalysisDepth.SIMPLIFIED:
-      return buildSimplifiedPrompt(diffContent, totalLines);
+      return buildSimplifiedPrompt(diffContent, totalLines, config.simplified);
     case AnalysisDepth.FULL:
-      return buildFullPrompt(diffContent, totalLines);
+      return buildFullPrompt(diffContent, totalLines, config.full);
     case AnalysisDepth.DETAILED:
-      return buildDetailedPrompt(diffContent, totalLines);
+      return buildDetailedPrompt(diffContent, totalLines, config.detailed);
   }
 }
 
-function buildSuperficialPrompt(diff: string, lines: number): string {
+function buildSuperficialPrompt(
+  diff: string,
+  lines: number,
+  focusPoints: string[],
+): string {
   return `You are analyzing a very large Pull Request (${lines} lines changed).
 Provide a quick high-level risk assessment.
 
@@ -113,15 +119,16 @@ Respond with JSON only:
 }
 
 Focus ONLY on:
-1. Database migrations
-2. API contract changes
-3. Critical config changes
-4. Obvious fatal error patterns
+${focusPoints.join("\n")}
 
 Keep response concise. Respond ONLY with valid JSON, no markdown.`;
 }
 
-function buildSimplifiedPrompt(diff: string, lines: number): string {
+function buildSimplifiedPrompt(
+  diff: string,
+  lines: number,
+  focusPoints: string[],
+): string {
   return `You are analyzing a large Pull Request (${lines} lines changed).
 Focus on major risks only.
 
@@ -161,15 +168,16 @@ Respond with JSON only:
 }
 
 Analyze for:
-1. BREAKING CHANGES: API changes, removed exports, schema modifications, contract changes
-2. FATAL ERROR POTENTIAL: Runtime crashes, null pointer exceptions, white screens, data corruption
-3. Database migrations and their impact
-4. Critical configuration changes
+${focusPoints.join("\n")}
 
 Rank findings by severity. Respond ONLY with valid JSON, no markdown.`;
 }
 
-function buildFullPrompt(diff: string, lines: number): string {
+function buildFullPrompt(
+  diff: string,
+  lines: number,
+  focusPoints: string[],
+): string {
   return `You are analyzing a Pull Request (${lines} lines changed).
 Provide comprehensive risk analysis.
 
@@ -190,7 +198,7 @@ Respond with JSON only:
   ],
   "fatalErrorRisks": [
     {
-      "file": "path/to/file", 
+      "file": "path/to/file",
       "line": <number optional>,
       "type": "runtime_crash|white_screen|data_loss|infinite_loop",
       "description": "detailed description of potential fatal error",
@@ -209,33 +217,17 @@ Respond with JSON only:
 }
 
 Analyze for:
-1. BREAKING CHANGES (highest priority):
-   - API endpoint changes
-   - Function signature modifications in public APIs
-   - Database schema changes
-   - Removed or renamed exports
-   - Contract/interface changes
-   - Environment variable changes
-
-2. FATAL ERROR POTENTIAL (second priority):
-   - Uncaught exceptions that could crash the app
-   - Null/undefined reference errors
-   - Frontend errors that could cause white screen
-   - Backend errors that could crash server
-   - Infinite loops or memory leaks
-   - Data corruption risks
-
-3. Database migrations impact
-4. Configuration changes
-5. Code complexity increase
-6. Security concerns
-7. Performance implications
+${focusPoints.join("\n")}
 
 Provide specific line numbers when possible. Rank all findings by severity.
 Respond ONLY with valid JSON, no markdown.`;
 }
 
-function buildDetailedPrompt(diff: string, lines: number): string {
+function buildDetailedPrompt(
+  diff: string,
+  lines: number,
+  focusPoints: string[],
+): string {
   return `You are analyzing a small Pull Request (${lines} lines changed).
 Provide deep, line-by-line risk analysis.
 
@@ -275,26 +267,7 @@ Respond with JSON only:
 }
 
 Perform deep analysis:
-1. BREAKING CHANGES (line-by-line):
-   - Every API change with before/after comparison
-   - Every export removal or modification
-   - Every schema change with migration impact
-   - Every contract/interface change with affected consumers
-   - Every env variable change with deployment impact
-
-2. FATAL ERROR POTENTIAL (scenario-based):
-   - Every potential runtime crash with reproduction steps
-   - Every null/undefined risk with edge cases
-   - Every frontend error that could white screen
-   - Every async error that could hang the app
-   - Every data corruption scenario
-
-3. Edge cases not covered by tests
-4. Performance regressions
-5. Security vulnerabilities
-6. Test coverage gaps
-7. Integration points affected
-8. Deployment risks
+${focusPoints.join("\n")}
 
 Be extremely thorough. Include line numbers for every finding.
 Provide actionable recommendations for each risk.

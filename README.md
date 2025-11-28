@@ -104,6 +104,8 @@ jobs:
 
 ## Configuration
 
+### API Key
+
 Set your Anthropic API key:
 
 ```bash
@@ -115,6 +117,44 @@ Or pass it directly:
 ```bash
 amisafe --api-key sk-ant-... --base main --head feature
 ```
+
+### Customizing Analysis Prompts
+
+Create a configuration file to customize what amisafe looks for in your PRs:
+
+```bash
+# Create .amisaferc.json with default prompts
+amisafe init
+
+# Override existing config
+amisafe init --force
+```
+
+This creates `.amisaferc.json` in your project root with customizable focus points for each analysis depth:
+
+```json
+{
+  "prompts": {
+    "superficial": [
+      "Database migrations",
+      "API contract changes",
+      "Critical config changes",
+      "Obvious fatal error patterns"
+    ],
+    "simplified": [...],
+    "full": [...],
+    "detailed": [...]
+  }
+}
+```
+
+**Analysis depths** (automatically selected based on PR size):
+- `superficial` - Very large PRs (>2000 lines)
+- `simplified` - Large PRs (1000-2000 lines)
+- `full` - Medium PRs (200-1000 lines)
+- `detailed` - Small PRs (<200 lines)
+
+Edit the focus points to match your team's priorities. For example, add "GraphQL schema changes" or "React component prop changes" to catch framework-specific risks.
 
 ## Risk Scoring
 

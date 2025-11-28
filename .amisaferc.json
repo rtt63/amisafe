@@ -1,0 +1,57 @@
+{
+  "prompts": {
+    "superficial": [
+      "Database migrations",
+      "API contract changes",
+      "Critical config changes",
+      "Obvious fatal error patterns"
+    ],
+    "simplified": [
+      "BREAKING CHANGES: API changes, removed exports, schema modifications, contract changes",
+      "FATAL ERROR POTENTIAL: Runtime crashes, null pointer exceptions, white screens, data corruption",
+      "Database migrations and their impact",
+      "Critical configuration changes"
+    ],
+    "full": [
+      "BREAKING CHANGES (highest priority):",
+      "  - API endpoint changes",
+      "  - Function signature modifications in public APIs",
+      "  - Database schema changes",
+      "  - Removed or renamed exports",
+      "  - Contract/interface changes",
+      "  - Environment variable changes",
+      "FATAL ERROR POTENTIAL (second priority):",
+      "  - Uncaught exceptions that could crash the app",
+      "  - Null/undefined reference errors",
+      "  - Frontend errors that could cause white screen",
+      "  - Backend errors that could crash server",
+      "  - Infinite loops or memory leaks",
+      "  - Data corruption risks",
+      "Database migrations impact",
+      "Configuration changes",
+      "Code complexity increase",
+      "Security concerns",
+      "Performance implications"
+    ],
+    "detailed": [
+      "BREAKING CHANGES (line-by-line):",
+      "  - Every API change with before/after comparison",
+      "  - Every export removal or modification",
+      "  - Every schema change with migration impact",
+      "  - Every contract/interface change with affected consumers",
+      "  - Every env variable change with deployment impact",
+      "FATAL ERROR POTENTIAL (scenario-based):",
+      "  - Every potential runtime crash with reproduction steps",
+      "  - Every null/undefined risk with edge cases",
+      "  - Every frontend error that could white screen",
+      "  - Every async error that could hang the app",
+      "  - Every data corruption scenario",
+      "Edge cases not covered by tests",
+      "Performance regressions",
+      "Security vulnerabilities",
+      "Test coverage gaps",
+      "Integration points affected",
+      "Deployment risks"
+    ]
+  }
+}
