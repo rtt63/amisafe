@@ -116,7 +116,7 @@ Uses Claude Sonnet 4.5 API. Average cost per PR analysis:
 - Large PR (500-1000 lines): ~$0.02
 - Huge PR (>2000 lines): ~$0.03
 
-Typical team (50 PRs/day): ~$1-1.50/day = **~$40/month**
+Typical team (50 PRs/day): $1-1.50/day = **~$40/month**
 
 ## License
 
