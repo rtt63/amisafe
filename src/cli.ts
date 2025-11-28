@@ -4,13 +4,28 @@ import { Command } from "commander";
 import { analyzeDeployRisk } from "./analyzer";
 import { formatForGitHub, formatJobSummary } from "./output/github-formatter";
 import { writeFileSync } from "fs";
+import { initConfig } from "./commands/init";
 
 const program = new Command();
 
 program
   .name("amisafe")
   .description("AI-powered deploy risk analyzer")
-  .version("0.1.0")
+  .version("0.1.0");
+
+// Init command
+program
+  .command("init")
+  .description("Create .amisaferc.json config file with default prompts")
+  .option("-f, --force", "Overwrite existing config file")
+  .action((options) => {
+    initConfig(options.force);
+  });
+
+// Analyze command (default)
+program
+  .command("analyze", { isDefault: true })
+  .description("Analyze deploy risk between two branches")
   .requiredOption("-b, --base <branch>", "Base branch")
   .requiredOption("-h, --head <branch>", "Head branch")
   .option("-k, --api-key <key>", "Anthropic API key")
