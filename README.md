@@ -4,23 +4,24 @@ Use AI to detect how potentially dangerous is to merge this PR.
 
 Examples
 
-- Big PR
-- Breaking changes or changes in specific files
-- Too much time between first and last commit, which might leed to lost focus
-- Incomplete error handle
+- Big PRs (too many things at once to keep focus on)
+- Breaking changes or changes in specific files (probably more edge-cases than we thought)
+- Too much time between first and last commit (heuristically, the longer it takes the more focus is changing towards "just ship it already")
+- Incomplete error handle (The owls are not what they seem)
+- and more
 
 ## Installation
 
 Required Claude API account
 
 1. Add `ANTHROPIC_API_KEY="your-key"` to secrets
-2.
+2. Install dependency
 
 ```bash
 npm install --save-dev prscore
 ```
 
-3. To create your custom config locally
+3. (optional) Create your custom config locally if needed
 
 ```bash
 npm install -g prscore && prscore init
@@ -57,6 +58,7 @@ By default, only users with **write, maintain, or admin** permissions can trigge
    ```
 
 **Example:**
+
 ```
 PRSCORE_TRUSTED_USERS: alice,bob,charlie
 ```
