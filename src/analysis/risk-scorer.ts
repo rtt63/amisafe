@@ -197,7 +197,7 @@ export function calculateRiskScore(
     recommendations.push("Verify no merge conflicts or stale code");
   }
 
-  if (overall >= 7) {
+  if (overall >= RISK_LEVEL_THRESHOLDS.CRITICAL) {
     recommendations.push("⚠️ CRITICAL RISK: Require multiple senior reviewers");
     recommendations.push("⚠️ Schedule extended testing period before merge");
   }

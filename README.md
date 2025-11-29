@@ -77,12 +77,12 @@ prscore calculates an overall risk score (0-10) based on:
 
 | Factor           | Weight | What it checks                                     |
 | ---------------- | ------ | -------------------------------------------------- |
-| Breaking Changes | 10     | API changes, removed exports, schema modifications |
-| Fatal Errors     | 9      | Runtime crashes, null errors, white screens        |
+| Breaking Changes | 7      | API changes, removed exports, schema modifications |
+| Fatal Errors     | 10     | Runtime crashes, null errors, white screens        |
 | PR Size          | 8      | Lines changed (>2000 = critical)                   |
 | Migrations       | 7      | Database schema changes                            |
-| Config Changes   | 6      | Environment, Docker, infrastructure files          |
-| Time Span        | 2      | Multi-day PRs (stale code risk)                    |
+| Config Changes   | 5      | Environment, Docker, infrastructure files          |
+| Time Span        | 1      | Multi-day PRs (stale code risk)                    |
 
 **Risk Levels:**
 
