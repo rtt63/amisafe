@@ -2,18 +2,20 @@
 
 Use AI to detect how potentially dangerous is to merge this PR.
 
-## Why is it better than tragitional linters and code review?
+## Why?
 
-It's a good option for tight, fast-paced teams where proper, detailed and qualified code review is a luxury. You still need tests, good typings and skilled engineers.
+> Is it better than traditional linters/code review approach?
+
+It's a good option for tight, **fast-paced teams** where proper, detailed and qualified code review is a luxury. You still need tests, good typings and skilled engineers.
 
 But **if most of your code reviews are LGTM at best - try this instead.**
 
-Examples
+## Examples
 
 - Big PRs (too many things at once to keep focus on)
 - Breaking changes or changes in specific files (probably more edge-cases than we thought)
-- Too much time between first and last commit (heuristically, the longer it takes the more focus is changing towards "just ship it already")
-- Incomplete error handle (The owls are not what they seem)
+- Too much time between first and last commit (heuristically, the longer it takes the more focus is shifting towards "just ship it already")
+- Incomplete error handling (The owls are not what they seem)
 - and more
 
 ## Installation
