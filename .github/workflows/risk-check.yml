@@ -106,6 +106,7 @@ jobs:
         if: steps.auth.outputs.authorized == 'true' && steps.pr.outputs.sha != ''
         with:
           node-version: "20"
+          cache: "npm"
 
       - name: Install prscore
         if: steps.auth.outputs.authorized == 'true' && steps.pr.outputs.sha != ''
